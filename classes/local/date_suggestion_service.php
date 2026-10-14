@@ -41,10 +41,10 @@ final class date_suggestion_service {
         $counts = [];
         $zone = \core_date::get_user_timezone_object();
         foreach ($rows as $row) {
-            if ($row->cmid === $cmid) {
+            if ((int) $row->cmid === $cmid) {
                 $selected = $row;
             }
-            if (!$row->duetime || $row->cmid === $cmid) {
+            if (!$row->duetime || (int) $row->cmid === $cmid) {
                 continue;
             }
             $day = (new \DateTimeImmutable('@' . $row->duetime))->setTimezone($zone)->format('Y-m-d');

@@ -82,7 +82,7 @@ final class learner_workload_calculator {
                     'grading' => (int) $snapshot->gradingtime,
                     'modified' => (int) $snapshot->modmodified,
                 ];
-                if ($override && $snapshot->cmid === $override['cmid']) {
+                if ($override && (int) $snapshot->cmid === (int) $override['cmid']) {
                     $base['due'] = $override['due'];
                     if ($snapshot->modname === 'quiz') {
                         $base['close'] = $override['due'];

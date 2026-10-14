@@ -116,7 +116,8 @@ final class calendar_data_service {
      * Fingerprint.
      */
     public static function fingerprint(array $base): string {
-        return hash('sha256', json_encode([$base['open'], $base['due'], $base['close'], $base['cutoff'], $base['grading'], $base['modified']]));
+        $dates = [$base['open'], $base['due'], $base['close'], $base['cutoff'], $base['grading'], $base['modified']];
+        return hash('sha256', json_encode($dates));
     }
 
     /** For displayed entries use only activities visible in this course to this viewer. */
