@@ -34,7 +34,7 @@ class behat_local_deadlineplanner extends behat_base {
      */
     public function i_enter_the_proposed_deadline(string $date): void {
         if (!preg_match('/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/', $date)) {
-            throw new \\InvalidArgumentException('Invalid test datetime format.');
+            throw new InvalidArgumentException('Invalid test datetime format.');
         }
         $this->getSession()->executeScript(
             'document.getElementById("dlp-newdue").value = ' . json_encode($date) . ';');
