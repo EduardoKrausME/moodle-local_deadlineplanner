@@ -27,6 +27,20 @@
  */
 class behat_local_deadlineplanner extends behat_base {
     /**
+     * Assign an ISO datetime without locale-dependent WebDriver keystrokes.
+     *
+     * @Given /^I enter the proposed deadline "(?P<date>[^"]+)"$/
+     * @param string $date ISO-8601 local datetime.
+     */
+    public function i_enter_the_proposed_deadline(string $date): void {
+        if (!preg_match('/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$/', $date)) {
+            throw new \\InvalidArgumentException('Invalid test datetime format.');
+        }
+        $this->getSession()->executeScript(
+            'document.getElementById("dlp-newdue").value = ' . json_encode($date) . ';');
+    }
+
+    /**
      * Open the planner route for a known course without clicking offscreen course navigation links.
      *
      * @Given /^I open the deadline planner for course "(?P<course>[^"]+)"$/

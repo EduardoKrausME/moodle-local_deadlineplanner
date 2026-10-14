@@ -39,7 +39,7 @@ Feature: Deadline planner calendar and proposals
     And I log in as "admin"
     And I am on the "Academic planning" course page
     When I open the deadline planner for course "Academic planning"
-    And I set the field "Proposed date" to "2030-01-03T12:00"
+    And I enter the proposed deadline "2030-01-03T12:00"
     And I press "Simulate without changing Moodle"
     Then I should see "Simulation saved"
     And I should see "Approve proposal"
