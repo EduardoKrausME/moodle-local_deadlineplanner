@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Academic deadline planner language strings.
  *
@@ -20,6 +21,7 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die();
 $string['activity'] = 'Atividade';
 $string['after'] = 'Sobrecarga simulada';
@@ -28,6 +30,7 @@ $string['approve'] = 'Aprovar proposta';
 $string['backtodashboard'] = 'Voltar ao planejamento';
 $string['before'] = 'Sobrecarga anterior';
 $string['beforeopen'] = 'O prazo não pode ser anterior à data de abertura.';
+$string['cachedef_course_deadlines'] = 'Prazos dos cursos em cache';
 $string['calendaronly'] = 'Calendário nativo (informativo)';
 $string['calendartitle'] = 'Prazos acadêmicos previstos';
 $string['category'] = 'Categoria';
@@ -42,6 +45,11 @@ $string['dailyweight'] = 'Limite indicativo de carga ponderada diária';
 $string['datasource'] = 'Origem';
 $string['day'] = 'Dia';
 $string['deadline'] = 'Prazo';
+$string['deadlineplanner:apply'] = 'Aprovar mudanças de prazos';
+$string['deadlineplanner:configure'] = 'Configurar regras de planejamento';
+$string['deadlineplanner:simulate'] = 'Criar simulações de prazos';
+$string['deadlineplanner:view'] = 'Visualizar o planejamento de prazos';
+$string['deadlineplanner:viewall'] = 'Visualizar planejamento institucional';
 $string['exportcsv'] = 'Exportar CSV';
 $string['filter'] = 'Filtrar';
 $string['fri'] = 'Sex';
@@ -53,13 +61,9 @@ $string['invalidmodule'] = 'A atividade não está disponível ou não está vis
 $string['invalidpolicy'] = 'Valores inválidos para a política de planejamento.';
 $string['invalidstate'] = 'A proposta não pode ser alterada nesta situação.';
 $string['limitexceeded'] = 'O grupo ultrapassa o limite de cálculo configurado. Não foram divulgados resultados parciais.';
-$string['local/deadlineplanner:apply'] = 'Aprovar mudanças de prazos';
-$string['local/deadlineplanner:configure'] = 'Configurar regras de planejamento';
-$string['local/deadlineplanner:simulate'] = 'Criar simulações de prazos';
-$string['local/deadlineplanner:view'] = 'Visualizar o planejamento de prazos';
-$string['local/deadlineplanner:viewall'] = 'Visualizar planejamento institucional';
 $string['manualnotice'] = 'Esta versão não altera datas automaticamente. Após aprovar, use o editor nativo do Moodle para aplicar o prazo proposto e revisar as demais configurações.';
 $string['maxlearners'] = 'Máximo de estudantes analisados em cada simulação';
+$string['messageprovider:proposalstatus'] = 'Situação da proposta de prazo';
 $string['mon'] = 'Seg';
 $string['noactivities'] = 'Nenhuma entrega elegível no período informado.';
 $string['noduedate'] = 'A atividade não tem prazo de entrega ou encerramento definido.';

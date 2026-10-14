@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Permission-aware learner timetables kept solely in request memory.
  *
@@ -20,8 +21,12 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
+/**
+ * Learner workload calculator implementation.
+ */
 final class learner_workload_calculator {
     /** @var array Cached nonpersonal snapshots for this calculation only. */
     private array $snapshots = [];
@@ -97,6 +102,9 @@ final class learner_workload_calculator {
     }
 
     /** Resolve per-learner timezone, preserving DST boundaries and avoiding server-time slicing. */
+    /**
+     * Zone.
+     */
     public static function zone(int $userid): \DateTimeZone {
         $user = \core_user::get_user($userid, 'id, timezone', MUST_EXIST);
         try {

@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Cross-course visibility, enrolment and scenario behaviour.
  *
@@ -20,6 +21,7 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner;
 
 use local_deadlineplanner\local\conflict_detector;
@@ -28,7 +30,15 @@ use local_deadlineplanner\local\privacy_guard;
 use local_deadlineplanner\local\scenario_simulator;
 use local_deadlineplanner\local\date_adjustment_service;
 
+/**
+ * Conflict detector test implementation.
+ *
+ * @covers \local_deadlineplanner\local\conflict_detector
+ */
 final class conflict_detector_test extends \advanced_testcase {
+    /**
+     * Seed two course case.
+     */
     private function seed_two_course_case(): array {
         global $DB;
         $course1 = $this->getDataGenerator()->create_course();
@@ -50,6 +60,9 @@ final class conflict_detector_test extends \advanced_testcase {
         return [$course1, $course2, $a, $b, $coursecm, $othercm, $users, $day];
     }
 
+    /**
+     * Test two course student has two visible deadlines.
+     */
     public function test_two_course_student_has_two_visible_deadlines(): void {
         $this->resetAfterTest();
         [$course1, $course2, $a, $b, $cm, $othercm, $users, $day] = $this->seed_two_course_case();
@@ -57,6 +70,9 @@ final class conflict_detector_test extends \advanced_testcase {
         $this->assertCount(2, $activities);
     }
 
+    /**
+     * Test hidden activity is not counted.
+     */
     public function test_hidden_activity_is_not_counted(): void {
         global $DB;
         $this->resetAfterTest();
@@ -67,6 +83,9 @@ final class conflict_detector_test extends \advanced_testcase {
         $this->assertCount(1, $activities);
     }
 
+    /**
+     * Test suspended enrolment is not used for cross course workload.
+     */
     public function test_suspended_enrolment_is_not_used_for_cross_course_workload(): void {
         global $DB;
         $this->resetAfterTest();
@@ -78,6 +97,9 @@ final class conflict_detector_test extends \advanced_testcase {
         $this->assertCount(1, $activities);
     }
 
+    /**
+     * Test privacy suppression for small conflict cells.
+     */
     public function test_privacy_suppression_for_small_conflict_cells(): void {
         $this->resetAfterTest();
         set_config('privacymin', 5, 'local_deadlineplanner');
@@ -86,6 +108,9 @@ final class conflict_detector_test extends \advanced_testcase {
         $this->assertFalse($suppressed['available']);
     }
 
+    /**
+     * Test manual application requires live date fingerprint.
+     */
     public function test_manual_application_requires_live_date_fingerprint(): void {
         global $DB;
         $this->resetAfterTest();
@@ -99,6 +124,9 @@ final class conflict_detector_test extends \advanced_testcase {
         (new date_adjustment_service())->approve($scenario->id, 2);
     }
 
+    /**
+     * Test authorized approval does not change module deadline.
+     */
     public function test_authorized_approval_does_not_change_module_deadline(): void {
         global $DB;
         $this->resetAfterTest();
@@ -111,6 +139,9 @@ final class conflict_detector_test extends \advanced_testcase {
         $this->assertEquals($day, $DB->get_field('assign', 'duedate', ['id' => $a->id]));
     }
 
+    /**
+     * Test simulation recalculates cross course overload.
+     */
     public function test_simulation_recalculates_cross_course_overload(): void {
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -125,6 +156,9 @@ final class conflict_detector_test extends \advanced_testcase {
         $this->assertSame(0, $stats['after']);
     }
 
+    /**
+     * Test cross course teacher permission does not extend to other course.
+     */
     public function test_cross_course_teacher_permission_does_not_extend_to_other_course(): void {
         $this->resetAfterTest();
         [$course1, $course2, $a, $b, $cm, $othercm, $users, $day] = $this->seed_two_course_case();

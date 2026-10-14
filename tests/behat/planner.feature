@@ -19,7 +19,7 @@ Feature: Deadline planner calendar and proposals
   Scenario: Course dashboard does not expose private student data
     Given I log in as "plannerteacher"
     And I am on the "Academic planning" course page
-    When I follow "Academic deadline planner"
+    When I open the deadline planner for course "Academic planning"
     Then I should see "Scheduled academic deadlines"
     And I should not see "Other course grades"
 
@@ -27,7 +27,7 @@ Feature: Deadline planner calendar and proposals
   Scenario: Proposal form requires a supported dated activity
     Given I log in as "plannerteacher"
     And I am on the "Academic planning" course page
-    When I follow "Academic deadline planner"
+    When I open the deadline planner for course "Academic planning"
     Then I should see "No eligible deadlines were found"
     And I should not see "Simulate without changing Moodle"
 
@@ -38,7 +38,7 @@ Feature: Deadline planner calendar and proposals
       | assign | Project A | PLANNER101 | 1893456000 |
     And I log in as "admin"
     And I am on the "Academic planning" course page
-    When I follow "Academic deadline planner"
+    When I open the deadline planner for course "Academic planning"
     And I set the field "Proposed date" to "2030-01-03T12:00"
     And I press "Simulate without changing Moodle"
     Then I should see "Simulation saved"

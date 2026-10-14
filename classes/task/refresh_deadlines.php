@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Periodic bounded collection of course module dates.
  *
@@ -20,13 +21,23 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\task;
 
+/**
+ * Refresh deadlines implementation.
+ */
 final class refresh_deadlines extends \core\task\scheduled_task {
+    /**
+     * Get name.
+     */
     public function get_name(): string {
         return get_string('refreshdeadlines', 'local_deadlineplanner');
     }
 
+    /**
+     * Execute.
+     */
     public function execute(): void {
         global $DB;
         $service = new \local_deadlineplanner\local\calendar_data_service();

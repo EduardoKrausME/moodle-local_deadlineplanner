@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Module snapshot collector and restricted calendar feed.
  *
@@ -20,8 +21,12 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
+/**
+ * Calendar data service implementation.
+ */
 final class calendar_data_service {
     /**
      * Collect course dates once per course and refresh only when stale.
@@ -59,27 +64,27 @@ final class calendar_data_service {
                 'fingerprint' => self::fingerprint($base),
                 'timemodified' => time(),
             ];
-            $old = $DB->get_record('local_dlp_deadline', ['cmid' => $cm->id]);
+            $old = $DB->get_record('local_deadlineplanner_deadline', ['cmid' => $cm->id]);
             if ($old) {
                 $row->id = $old->id;
-                $DB->update_record('local_dlp_deadline', $row);
+                $DB->update_record('local_deadlineplanner_deadline', $row);
             } else {
-                $DB->insert_record('local_dlp_deadline', $row);
+                $DB->insert_record('local_deadlineplanner_deadline', $row);
             }
         }
         // Deleted or unsupported modules never keep producing obligations.
         if ($seen) {
             [$insql, $params] = $DB->get_in_or_equal($seen, SQL_PARAMS_NAMED, 'cm', false);
             $params['courseid'] = $courseid;
-            $DB->delete_records_select('local_dlp_deadline', "courseid = :courseid AND cmid $insql", $params);
+            $DB->delete_records_select('local_deadlineplanner_deadline', "courseid = :courseid AND cmid $insql", $params);
         } else {
-            $DB->delete_records('local_dlp_deadline', ['courseid' => $courseid]);
+            $DB->delete_records('local_deadlineplanner_deadline', ['courseid' => $courseid]);
         }
-        $sync = $DB->get_record('local_dlp_sync', ['courseid' => $courseid]);
+        $sync = $DB->get_record('local_deadlineplanner_sync', ['courseid' => $courseid]);
         if ($sync) {
-            $DB->set_field('local_dlp_sync', 'timemodified', time(), ['id' => $sync->id]);
+            $DB->set_field('local_deadlineplanner_sync', 'timemodified', time(), ['id' => $sync->id]);
         } else {
-            $DB->insert_record('local_dlp_sync', (object) [
+            $DB->insert_record('local_deadlineplanner_sync', (object) [
                 'courseid' => $courseid, 'timemodified' => time(),
             ]);
         }
@@ -87,6 +92,9 @@ final class calendar_data_service {
     }
 
     /** Course-level snapshots, refreshing at most once each five minutes in web requests. */
+    /**
+     * Get course.
+     */
     public function get_course(int $courseid): array {
         global $DB;
         $cache = \cache::make('local_deadlineplanner', 'course_deadlines');
@@ -94,21 +102,27 @@ final class calendar_data_service {
         if ($cached !== false) {
             return $cached;
         }
-        $recent = $DB->get_field('local_dlp_sync', 'timemodified', ['courseid' => $courseid]);
+        $recent = $DB->get_field('local_deadlineplanner_sync', 'timemodified', ['courseid' => $courseid]);
         if (!$recent || (int) $recent < time() - 900) {
             $this->refresh_course($courseid);
         }
-        $rows = $DB->get_records('local_dlp_deadline', ['courseid' => $courseid]);
+        $rows = $DB->get_records('local_deadlineplanner_deadline', ['courseid' => $courseid]);
         $cache->set((string) $courseid, $rows);
         return $rows;
     }
 
     /** A fingerprint binds a proposal to the module's entire relevant date state. */
+    /**
+     * Fingerprint.
+     */
     public static function fingerprint(array $base): string {
         return hash('sha256', json_encode([$base['open'], $base['due'], $base['close'], $base['cutoff'], $base['grading'], $base['modified']]));
     }
 
     /** For displayed entries use only activities visible in this course to this viewer. */
+    /**
+     * Calendar.
+     */
     public function calendar(int $courseid, int $userid, int $start, int $end): array {
         $course = get_course($courseid);
         $modinfo = get_fast_modinfo($course, $userid);

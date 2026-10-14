@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Append-only scenario audit.
  *
@@ -20,13 +21,20 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
+/**
+ * Audit history implementation.
+ */
 final class audit_history {
+    /**
+     * Add.
+     */
     public static function add(int $scenarioid, int $actorid, string $action, array $details = []): void {
         global $DB;
         // No learner IDs or per-student timetable may be written in the audit trail.
-        $DB->insert_record('local_dlp_audit', (object) [
+        $DB->insert_record('local_deadlineplanner_audit', (object) [
             'scenarioid' => $scenarioid,
             'actorid' => $actorid,
             'action' => $action,

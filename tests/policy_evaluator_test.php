@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Deterministic calendar and DST unit tests.
  *
@@ -20,11 +21,20 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner;
 
 use local_deadlineplanner\local\policy_evaluator;
 
+/**
+ * Policy evaluator test implementation.
+ *
+ * @covers \local_deadlineplanner\local\policy_evaluator
+ */
 final class policy_evaluator_test extends \advanced_testcase {
+    /**
+     * Test multiple due dates raise daily conflict.
+     */
     public function test_multiple_due_dates_raise_daily_conflict(): void {
         $this->resetAfterTest();
         $zone = new \DateTimeZone('America/Sao_Paulo');
@@ -35,6 +45,9 @@ final class policy_evaluator_test extends \advanced_testcase {
         $this->assertSame(['2026-10-14'], $result['overload']);
     }
 
+    /**
+     * Test weekly load detects conflict across days.
+     */
     public function test_weekly_load_detects_conflict_across_days(): void {
         $zone = new \DateTimeZone('UTC');
         $activities = [];
@@ -46,6 +59,9 @@ final class policy_evaluator_test extends \advanced_testcase {
         $this->assertCount(5, $result['overload']);
     }
 
+    /**
+     * Test weighted quiz not assumed equal to assignment.
+     */
     public function test_weighted_quiz_not_assumed_equal_to_assignment(): void {
         $zone = new \DateTimeZone('UTC');
         $timestamp = strtotime('2026-10-14 12:00 UTC');
@@ -57,6 +73,9 @@ final class policy_evaluator_test extends \advanced_testcase {
         $this->assertSame(['2026-10-14'], $result['overload']);
     }
 
+    /**
+     * Test timezone local day can differ from utc.
+     */
     public function test_timezone_local_day_can_differ_from_utc(): void {
         $timestamp = strtotime('2026-10-14 01:30 UTC');
         $event = [['timestamp' => $timestamp, 'weight' => 1]];
@@ -66,6 +85,9 @@ final class policy_evaluator_test extends \advanced_testcase {
         $this->assertArrayHasKey('2026-10-13', $brazil['days']);
     }
 
+    /**
+     * Test daylight saving transition is not a fixed 24h offset.
+     */
     public function test_daylight_saving_transition_is_not_a_fixed_24h_offset(): void {
         $zone = new \DateTimeZone('America/New_York');
         $before = (new \DateTimeImmutable('2026-11-01 00:30', $zone))->getTimestamp();

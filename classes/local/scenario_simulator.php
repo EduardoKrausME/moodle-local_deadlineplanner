@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Nonmutating scenario generation.
  *
@@ -20,10 +21,17 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
+/**
+ * Scenario simulator implementation.
+ */
 final class scenario_simulator {
     /** Simulations never update Moodle activity tables. */
+    /**
+     * Simulate.
+     */
     public function simulate(int $courseid, int $cmid, int $newdue, int $userid): \stdClass {
         global $DB;
         $context = \context_course::instance($courseid);
@@ -53,7 +61,7 @@ final class scenario_simulator {
             throw new \moodle_exception('aftercutoff', 'local_deadlineplanner');
         }
         // Bound adaptive what-if queries to limit cross-course inference by differencing.
-        $dailycreated = $DB->count_records_select('local_dlp_scenario',
+        $dailycreated = $DB->count_records_select('local_deadlineplanner_scenario',
             'userid = :userid AND timecreated > :since',
             ['userid' => $userid, 'since' => time() - DAYSECS]);
         if ($dailycreated >= 30) {
@@ -76,7 +84,7 @@ final class scenario_simulator {
             'timecreated' => time(),
             'timemodified' => time(),
         ];
-        $scenario->id = $DB->insert_record('local_dlp_scenario', $scenario);
+        $scenario->id = $DB->insert_record('local_deadlineplanner_scenario', $scenario);
         audit_history::add((int) $scenario->id, $userid, 'created',
             ['old' => $scenario->olddue, 'new' => $scenario->newdue]);
         return $scenario;

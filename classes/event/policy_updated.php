@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Institutional policy settings changed.
  *
@@ -20,18 +21,31 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\event;
 
+/**
+ * Policy updated implementation.
+ */
 final class policy_updated extends \core\event\base {
+    /**
+     * Init.
+     */
     protected function init(): void {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
+    /**
+     * Get name.
+     */
     public static function get_name(): string {
         return get_string('policysaved', 'local_deadlineplanner');
     }
 
+    /**
+     * Get description.
+     */
     public function get_description(): string {
         return 'User ' . $this->userid . ' updated academic planning policy.';
     }

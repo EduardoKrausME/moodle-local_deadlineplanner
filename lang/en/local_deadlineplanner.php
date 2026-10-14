@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Academic deadline planner language strings.
  *
@@ -20,6 +21,7 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die();
 $string['activity'] = 'Activity';
 $string['after'] = 'Simulated overload';
@@ -28,6 +30,7 @@ $string['approve'] = 'Approve proposal';
 $string['backtodashboard'] = 'Back to planning dashboard';
 $string['before'] = 'Previous overload';
 $string['beforeopen'] = 'The deadline must not precede the opening date.';
+$string['cachedef_course_deadlines'] = 'Course deadline snapshots';
 $string['calendaronly'] = 'Native calendar (informational)';
 $string['calendartitle'] = 'Scheduled academic deadlines';
 $string['category'] = 'Category';
@@ -42,6 +45,11 @@ $string['dailyweight'] = 'Maximum indicative weighted load per day';
 $string['datasource'] = 'Source';
 $string['day'] = 'Day';
 $string['deadline'] = 'Deadline';
+$string['deadlineplanner:apply'] = 'Approve deadline changes';
+$string['deadlineplanner:configure'] = 'Configure planning rules';
+$string['deadlineplanner:simulate'] = 'Create deadline simulations';
+$string['deadlineplanner:view'] = 'View course deadline planning';
+$string['deadlineplanner:viewall'] = 'View institution-wide planning';
 $string['exportcsv'] = 'Export CSV';
 $string['filter'] = 'Filter';
 $string['fri'] = 'Fri';
@@ -53,13 +61,9 @@ $string['invalidmodule'] = 'The module is unavailable or not visible.';
 $string['invalidpolicy'] = 'Invalid planning policy values.';
 $string['invalidstate'] = 'This proposal cannot be changed in its current state.';
 $string['limitexceeded'] = 'The cohort is larger than the configured safe calculation limit. No partial results were published.';
-$string['local/deadlineplanner:apply'] = 'Approve deadline changes';
-$string['local/deadlineplanner:configure'] = 'Configure planning rules';
-$string['local/deadlineplanner:simulate'] = 'Create deadline simulations';
-$string['local/deadlineplanner:view'] = 'View course deadline planning';
-$string['local/deadlineplanner:viewall'] = 'View institution-wide planning';
 $string['manualnotice'] = 'This version does not automatically change activity dates. After approval, use the native Moodle activity editor to apply the proposed deadline and verify other settings.';
 $string['maxlearners'] = 'Maximum learners analyzed in a single simulation';
+$string['messageprovider:proposalstatus'] = 'Deadline proposal status';
 $string['mon'] = 'Mon';
 $string['noactivities'] = 'No eligible deadlines were found in the selected period.';
 $string['noduedate'] = 'This activity has no defined submission or closing deadline.';

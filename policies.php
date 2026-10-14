@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Course-level policy administration; system-level policy capability is required.
  *
@@ -20,6 +21,7 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once(__DIR__ . '/../../config.php');
 
 $courseid = required_param('courseid', PARAM_INT);
@@ -43,15 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['dailyweight'] > 1000 || $values['privacymin'] > 1000) {
         throw new moodle_exception('invalidpolicy', 'local_deadlineplanner');
     }
-    $previous = $DB->get_record('local_dlp_policy', ['contextid' => $context->id]);
+    $previous = $DB->get_record('local_deadlineplanner_policy', ['contextid' => $context->id]);
     $values['contextid'] = $context->id;
     $values['timemodified'] = time();
     if ($previous) {
         $values['id'] = $previous->id;
-        $DB->update_record('local_dlp_policy', (object) $values);
+        $DB->update_record('local_deadlineplanner_policy', (object) $values);
     } else {
         $values['timecreated'] = time();
-        $DB->insert_record('local_dlp_policy', (object) $values);
+        $DB->insert_record('local_deadlineplanner_policy', (object) $values);
     }
     \local_deadlineplanner\event\policy_updated::create([
         'context' => $context, 'other' => ['courseid' => $courseid],

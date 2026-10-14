@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/deadlineplanner/db" VERSION="20261014" COMMENT="Deadline planning data">
+<XMLDB PATH="local/deadlineplanner/db" VERSION="20261014" COMMENT="Deadline planning data"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   <TABLES>
-    <TABLE NAME="local_dlp_policy" COMMENT="Institutional policy by scope">
+    <TABLE NAME="local_deadlineplanner_policy" COMMENT="Institutional policy by scope">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
@@ -15,7 +17,7 @@
       <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
       <INDEXES><INDEX NAME="context_unique" UNIQUE="true" FIELDS="contextid"/></INDEXES>
     </TABLE>
-    <TABLE NAME="local_dlp_deadline" COMMENT="Module-level due date snapshots; no student data">
+    <TABLE NAME="local_deadlineplanner_deadline" COMMENT="Module-level due date snapshots; no student data">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -37,7 +39,7 @@
         <INDEX NAME="course_due" UNIQUE="false" FIELDS="courseid, duetime"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="local_dlp_sync" COMMENT="Refresh watermark for courses even when no activities have due dates">
+    <TABLE NAME="local_deadlineplanner_sync" COMMENT="Refresh watermark for courses even when no activities have due dates">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -46,7 +48,7 @@
       <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
       <INDEXES><INDEX NAME="course_unique" UNIQUE="true" FIELDS="courseid"/></INDEXES>
     </TABLE>
-    <TABLE NAME="local_dlp_scenario" COMMENT="Proposed change snapshots">
+    <TABLE NAME="local_deadlineplanner_scenario" COMMENT="Proposed change snapshots">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -68,7 +70,7 @@
         <INDEX NAME="userid_idx" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="local_dlp_audit" COMMENT="Immutable audit trail without student identities">
+    <TABLE NAME="local_deadlineplanner_audit" COMMENT="Immutable audit trail without student identities">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="scenarioid" TYPE="int" LENGTH="10" NOTNULL="true"/>

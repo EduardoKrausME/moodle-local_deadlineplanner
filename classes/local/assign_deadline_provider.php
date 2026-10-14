@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Assignment due date adapter.
  *
@@ -20,6 +21,7 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
 /**
@@ -27,6 +29,9 @@ namespace local_deadlineplanner\local;
  * Do not interpret an opening date as a due date.
  */
 final class assign_deadline_provider implements deadline_provider_interface {
+    /**
+     * Base.
+     */
     public function base(int $instanceid): ?array {
         global $DB;
         $record = $DB->get_record('assign', ['id' => $instanceid],
@@ -44,12 +49,39 @@ final class assign_deadline_provider implements deadline_provider_interface {
         ];
     }
 
+    /**
+     * Effective due.
+     */
     public function effective_due(int $instanceid, int $userid, array $base): int {
         global $DB;
         $due = (int) $base['due'];
-        $extension = $DB->get_field('assign_user_flags', 'grantextension',
+        $extension = $DB->get_field('assign_user_flags', 'extensionduedate',
             ['assignment' => $instanceid, 'userid' => $userid]);
-        // Granted extensions are explicit individual overrides, never inferred from submission data.
+        // Assignment overrides are module-owned settings. Individual overrides take priority.
+        // Reading these tables is necessary for Moodle versions without a public per-learner dates API.
+        $useroverride = $DB->get_record('assign_overrides',
+            ['assignid' => $instanceid, 'userid' => $userid], 'id, duedate');
+        if ($useroverride && $useroverride->duedate !== null) {
+            $due = (int) $useroverride->duedate;
+        } else {
+            $groups = groups_get_user_groups((int) $DB->get_field('assign', 'course', ['id' => $instanceid]), $userid);
+            if (!empty($groups[0])) {
+                [$insql, $params] = $DB->get_in_or_equal(array_values($groups[0]), SQL_PARAMS_NAMED, 'grp');
+                $params['assignid'] = $instanceid;
+                $overrides = $DB->get_records_select('assign_overrides',
+                    "assignid = :assignid AND groupid $insql", $params, '', 'id, duedate');
+                $groupdates = [];
+                foreach ($overrides as $override) {
+                    if ($override->duedate !== null) {
+                        $groupdates[] = (int) $override->duedate;
+                    }
+                }
+                if ($groupdates) {
+                    $due = in_array(0, $groupdates, true) ? 0 : max($groupdates);
+                }
+            }
+        }
+        // A granted extension is an explicit individual deadline; do not infer it from submissions.
         if ($extension !== false && (int) $extension > 0) {
             return (int) $extension;
         }

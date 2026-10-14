@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Deterministic threshold evaluator.
  *
@@ -20,8 +21,12 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
+/**
+ * Policy evaluator implementation.
+ */
 final class policy_evaluator {
     /**
      * Determine overload days/week buckets from an activity list.
@@ -65,6 +70,9 @@ final class policy_evaluator {
     }
 
     /** Get effective administrator thresholds with hard safety minimum for anonymity. */
+    /**
+     * Policy.
+     */
     public static function policy(int $courseid = 0): array {
         global $DB;
         $defaults = [
@@ -77,7 +85,7 @@ final class policy_evaluator {
             return $defaults;
         }
         $context = \context_course::instance($courseid);
-        $row = $DB->get_record('local_dlp_policy', ['contextid' => $context->id]);
+        $row = $DB->get_record('local_deadlineplanner_policy', ['contextid' => $context->id]);
         if (!$row) {
             return $defaults;
         }
@@ -90,6 +98,9 @@ final class policy_evaluator {
     }
 
     /** Weights are indicative, not estimates of hours or real workload. */
+    /**
+     * Weight.
+     */
     public static function weight(string $modname): float {
         if ($modname === 'quiz') {
             return max(0.1, (float) get_config('local_deadlineplanner', 'weightquiz') ?: 1.5);

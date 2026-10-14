@@ -8,11 +8,12 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
 /**
  * Quiz due date adapter.
  *
@@ -20,12 +21,16 @@
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_deadlineplanner\local;
 
 /**
  * Quiz closing time is its effective assessment deadline.
  */
 final class quiz_deadline_provider implements deadline_provider_interface {
+    /**
+     * Base.
+     */
     public function base(int $instanceid): ?array {
         global $DB;
         $record = $DB->get_record('quiz', ['id' => $instanceid],
@@ -43,6 +48,9 @@ final class quiz_deadline_provider implements deadline_provider_interface {
         ];
     }
 
+    /**
+     * Effective due.
+     */
     public function effective_due(int $instanceid, int $userid, array $base): int {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/mod/quiz/lib.php');

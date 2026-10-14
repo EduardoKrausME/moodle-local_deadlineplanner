@@ -4,7 +4,7 @@
 }}
 <div class="local-deadlineplanner" data-region="deadlineplanner">
   <p>{{privacytext}}</p>
-  {{#canconfigure}}<p><a href="{{policyurl}}">{{#str}}policyconfiguration, local_deadlineplanner{{/str}}</a></p>{{/canconfigure}}
+  {{#canconfigure}}<p><a href="{{{policyurl}}}">{{#str}}policyconfiguration, local_deadlineplanner{{/str}}</a></p>{{/canconfigure}}
   <form method="get" action="{{dashboardurl}}" class="mb-3">
     <input type="hidden" name="courseid" value="{{courseid}}">
     <label for="dlp-start">{{#str}}periodstart, local_deadlineplanner{{/str}}</label>
@@ -20,7 +20,7 @@
     {{/hascategories}}
     <button type="submit" class="btn btn-secondary">{{#str}}filter, local_deadlineplanner{{/str}}</button>
   </form>
-  <p><a href="{{exporturl}}">{{#str}}exportcsv, local_deadlineplanner{{/str}}</a></p>
+  <p><a href="{{{exporturl}}}">{{#str}}exportcsv, local_deadlineplanner{{/str}}</a></p>
   <h3>{{#str}}calendartitle, local_deadlineplanner{{/str}}</h3>
   {{#hascalendar}}
     <div class="table-responsive">
@@ -38,7 +38,7 @@
           {{#days}}
             <td><time datetime="{{isodate}}">{{day}}</time>
               {{#hasitems}}<ul class="list-unstyled mb-0">
-                {{#events}}<li><a href="{{url}}">{{name}}</a></li>{{/events}}
+                {{#events}}<li><a href="{{{url}}}">{{name}}</a></li>{{/events}}
               </ul>{{/hasitems}}
             </td>
           {{/days}}
@@ -49,7 +49,7 @@
   {{#hasrows}}
   <table class="generaltable table table-striped">
     <thead><tr><th>{{#str}}activity, local_deadlineplanner{{/str}}</th><th>{{#str}}course, local_deadlineplanner{{/str}}</th><th>{{#str}}type, local_deadlineplanner{{/str}}</th><th>{{#str}}deadline, local_deadlineplanner{{/str}}</th><th>{{#str}}datasource, local_deadlineplanner{{/str}}</th></tr></thead>
-    <tbody>{{#rows}}<tr><td><a href="{{url}}">{{name}}</a></td><td>{{course}}</td><td>{{type}}</td><td>{{date}}</td><td>{{source}}</td></tr>{{/rows}}</tbody>
+    <tbody>{{#rows}}<tr><td><a href="{{{url}}}">{{name}}</a></td><td>{{course}}</td><td>{{type}}</td><td>{{date}}</td><td>{{source}}</td></tr>{{/rows}}</tbody>
   </table>
   {{/hasrows}}
   {{^hasrows}}<p>{{#str}}noactivities, local_deadlineplanner{{/str}}</p>{{/hasrows}}
@@ -94,7 +94,7 @@
   {{#hasscenarios}}
     <table class="generaltable table">
       <thead><tr><th>{{#str}}originaldate, local_deadlineplanner{{/str}}</th><th>{{#str}}proposeddate, local_deadlineplanner{{/str}}</th><th>{{#str}}status, local_deadlineplanner{{/str}}</th></tr></thead>
-      <tbody>{{#scenarios}}<tr><td>{{original}}</td><td>{{proposed}}</td><td><a href="{{url}}">{{status}}</a></td></tr>{{/scenarios}}</tbody>
+      <tbody>{{#scenarios}}<tr><td>{{original}}</td><td>{{proposed}}</td><td><a href="{{{url}}}">{{status}}</a></td></tr>{{/scenarios}}</tbody>
     </table>
   {{/hasscenarios}}
   {{^hasscenarios}}<p>{{#str}}noscenarios, local_deadlineplanner{{/str}}</p>{{/hasscenarios}}
