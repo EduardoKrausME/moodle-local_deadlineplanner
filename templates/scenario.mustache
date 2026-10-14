@@ -1,0 +1,31 @@
+{{!
+  @template local_deadlineplanner/scenario
+  @description Safe proposal review and manual application.
+}}
+<section class="local-deadlineplanner">
+  <h3>{{#str}}scenario, local_deadlineplanner{{/str}} #{{id}}</h3>
+  <dl>
+    <dt>{{#str}}originaldate, local_deadlineplanner{{/str}}</dt><dd>{{original}}</dd>
+    <dt>{{#str}}proposeddate, local_deadlineplanner{{/str}}</dt><dd>{{proposed}}</dd>
+    <dt>{{#str}}status, local_deadlineplanner{{/str}}</dt><dd>{{status}}</dd>
+  </dl>
+  {{#hasmetrics}}
+    <table class="generaltable table">
+      <thead><tr><th>{{#str}}before, local_deadlineplanner{{/str}}</th><th>{{#str}}after, local_deadlineplanner{{/str}}</th><th>{{#str}}improved, local_deadlineplanner{{/str}}</th><th>{{#str}}worsened, local_deadlineplanner{{/str}}</th></tr></thead>
+      <tbody><tr><td>{{before}}</td><td>{{after}}</td><td>{{improved}}</td><td>{{worsened}}</td></tr></tbody>
+    </table>
+    <p>{{#str}}indicative, local_deadlineplanner{{/str}}</p>
+  {{/hasmetrics}}
+  {{^hasmetrics}}<p>{{reason}}</p>{{/hasmetrics}}
+  {{#canapprove}}
+    <form method="post" action="{{approveurl}}">
+      <input type="hidden" name="sesskey" value="{{sesskey}}">
+      <button type="submit" class="btn btn-primary">{{#str}}approve, local_deadlineplanner{{/str}}</button>
+    </form>
+  {{/canapprove}}
+  {{#hasmanualurl}}
+    <p>{{#str}}manualnotice, local_deadlineplanner{{/str}}</p>
+    <a href="{{manualurl}}" class="btn btn-secondary">{{#str}}openeditor, local_deadlineplanner{{/str}}</a>
+  {{/hasmanualurl}}
+  <p><a href="{{backurl}}">{{#str}}backtodashboard, local_deadlineplanner{{/str}}</a></p>
+</section>

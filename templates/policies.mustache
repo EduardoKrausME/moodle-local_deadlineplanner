@@ -1,0 +1,27 @@
+{{!
+  @template local_deadlineplanner/policies
+  @description Course context institutional policy settings.
+}}
+<h3>{{#str}}policyconfiguration, local_deadlineplanner{{/str}}</h3>
+<form method="post" action="{{formurl}}">
+  <input type="hidden" name="courseid" value="{{courseid}}">
+  <input type="hidden" name="sesskey" value="{{sesskey}}">
+  <div class="mb-3">
+    <label for="dlp-dailycount">{{#str}}dailycount, local_deadlineplanner{{/str}}</label>
+    <input id="dlp-dailycount" name="dailycount" type="number" min="1" max="100" value="{{dailycount}}" required>
+  </div>
+  <div class="mb-3">
+    <label for="dlp-weeklycount">{{#str}}weeklycount, local_deadlineplanner{{/str}}</label>
+    <input id="dlp-weeklycount" name="weeklycount" type="number" min="1" max="500" value="{{weeklycount}}" required>
+  </div>
+  <div class="mb-3">
+    <label for="dlp-dailyweight">{{#str}}dailyweight, local_deadlineplanner{{/str}}</label>
+    <input id="dlp-dailyweight" name="dailyweight" type="number" min="0.1" step="0.1" max="1000" value="{{dailyweight}}" required>
+  </div>
+  <div class="mb-3">
+    <label for="dlp-privacymin">{{#str}}privacymin, local_deadlineplanner{{/str}}</label>
+    <input id="dlp-privacymin" name="privacymin" type="number" min="5" max="1000" value="{{privacymin}}" required>
+  </div>
+  <button type="submit" class="btn btn-primary">{{#str}}savechanges{{/str}}</button>
+</form>
+<p><a href="{{backurl}}">{{#str}}backtodashboard, local_deadlineplanner{{/str}}</a></p>

@@ -1,0 +1,101 @@
+{{!
+  @template local_deadlineplanner/dashboard
+  @description Course planning dashboard, including simulation form.
+}}
+<div class="local-deadlineplanner" data-region="deadlineplanner">
+  <p>{{privacytext}}</p>
+  {{#canconfigure}}<p><a href="{{policyurl}}">{{#str}}policyconfiguration, local_deadlineplanner{{/str}}</a></p>{{/canconfigure}}
+  <form method="get" action="{{dashboardurl}}" class="mb-3">
+    <input type="hidden" name="courseid" value="{{courseid}}">
+    <label for="dlp-start">{{#str}}periodstart, local_deadlineplanner{{/str}}</label>
+    <input id="dlp-start" type="date" name="startdate" value="{{startstr}}">
+    <label for="dlp-end">{{#str}}periodend, local_deadlineplanner{{/str}}</label>
+    <input id="dlp-end" type="date" name="enddate" value="{{endstr}}">
+    {{#hascategories}}
+      <label for="dlp-category">{{#str}}category, local_deadlineplanner{{/str}}</label>
+      <select id="dlp-category" name="categoryid">
+        <option value="0">{{#str}}currentcourse, local_deadlineplanner{{/str}}</option>
+        {{#categories}}<option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>{{/categories}}
+      </select>
+    {{/hascategories}}
+    <button type="submit" class="btn btn-secondary">{{#str}}filter, local_deadlineplanner{{/str}}</button>
+  </form>
+  <p><a href="{{exporturl}}">{{#str}}exportcsv, local_deadlineplanner{{/str}}</a></p>
+  <h3>{{#str}}calendartitle, local_deadlineplanner{{/str}}</h3>
+  {{#hascalendar}}
+    <div class="table-responsive">
+      <table class="generaltable table table-bordered local-deadlineplanner-calendar">
+        <thead><tr>
+          <th>{{#str}}mon, local_deadlineplanner{{/str}}</th>
+          <th>{{#str}}tue, local_deadlineplanner{{/str}}</th>
+          <th>{{#str}}wed, local_deadlineplanner{{/str}}</th>
+          <th>{{#str}}thu, local_deadlineplanner{{/str}}</th>
+          <th>{{#str}}fri, local_deadlineplanner{{/str}}</th>
+          <th>{{#str}}sat, local_deadlineplanner{{/str}}</th>
+          <th>{{#str}}sun, local_deadlineplanner{{/str}}</th>
+        </tr></thead>
+        <tbody>{{#calendarweeks}}<tr>
+          {{#days}}
+            <td><time datetime="{{isodate}}">{{day}}</time>
+              {{#hasitems}}<ul class="list-unstyled mb-0">
+                {{#events}}<li><a href="{{url}}">{{name}}</a></li>{{/events}}
+              </ul>{{/hasitems}}
+            </td>
+          {{/days}}
+        </tr>{{/calendarweeks}}</tbody>
+      </table>
+    </div>
+  {{/hascalendar}}
+  {{#hasrows}}
+  <table class="generaltable table table-striped">
+    <thead><tr><th>{{#str}}activity, local_deadlineplanner{{/str}}</th><th>{{#str}}course, local_deadlineplanner{{/str}}</th><th>{{#str}}type, local_deadlineplanner{{/str}}</th><th>{{#str}}deadline, local_deadlineplanner{{/str}}</th><th>{{#str}}datasource, local_deadlineplanner{{/str}}</th></tr></thead>
+    <tbody>{{#rows}}<tr><td><a href="{{url}}">{{name}}</a></td><td>{{course}}</td><td>{{type}}</td><td>{{date}}</td><td>{{source}}</td></tr>{{/rows}}</tbody>
+  </table>
+  {{/hasrows}}
+  {{^hasrows}}<p>{{#str}}noactivities, local_deadlineplanner{{/str}}</p>{{/hasrows}}
+  {{#hasindicators}}
+  <h3>{{#str}}dailyconcentration, local_deadlineplanner{{/str}}</h3>
+  <p>{{#str}}courseonly, local_deadlineplanner{{/str}}</p>
+  <table class="generaltable table">
+    <thead><tr><th>{{#str}}day, local_deadlineplanner{{/str}}</th><th>{{#str}}dailycountlabel, local_deadlineplanner{{/str}}</th><th>{{#str}}weeklycountlabel, local_deadlineplanner{{/str}}</th></tr></thead>
+    <tbody>{{#indicators}}<tr {{#high}}class="table-warning"{{/high}}><td>{{day}}</td><td>{{count}}</td><td>{{weekcount}}</td></tr>{{/indicators}}</tbody>
+  </table>
+  {{/hasindicators}}
+  {{#hassuggestions}}
+    <h3>{{#str}}suggestions, local_deadlineplanner{{/str}}</h3>
+    <p>{{suggestionmodule}} — {{#str}}suggestionhint, local_deadlineplanner{{/str}}</p>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+    {{#suggestions}}
+      <form method="post" action="{{createurl}}">
+        <input type="hidden" name="courseid" value="{{courseid}}">
+        <input type="hidden" name="sesskey" value="{{sesskey}}">
+        <input type="hidden" name="cmid" value="{{cmid}}">
+        <input type="hidden" name="newdue" value="{{inputdate}}">
+        <button type="submit" class="btn btn-outline-secondary">{{date}} ({{count}})</button>
+      </form>
+    {{/suggestions}}
+    </div>
+  {{/hassuggestions}}
+  {{#hasmodules}}
+    <h3>{{#str}}createproposal, local_deadlineplanner{{/str}}</h3>
+    <form method="post" action="{{createurl}}" data-region="scenario-form">
+      <input type="hidden" name="courseid" value="{{courseid}}">
+      <input type="hidden" name="sesskey" value="{{sesskey}}">
+      <label for="dlp-module">{{#str}}activity, local_deadlineplanner{{/str}}</label>
+      <select id="dlp-module" name="cmid" required>
+        {{#modules}}<option value="{{id}}">{{name}} — {{due}}</option>{{/modules}}
+      </select>
+      <label for="dlp-newdue">{{#str}}proposeddate, local_deadlineplanner{{/str}}</label>
+      <input id="dlp-newdue" type="datetime-local" name="newdue" required>
+      <button type="submit" class="btn btn-primary">{{#str}}simulate, local_deadlineplanner{{/str}}</button>
+    </form>
+  {{/hasmodules}}
+  <h3>{{#str}}history, local_deadlineplanner{{/str}}</h3>
+  {{#hasscenarios}}
+    <table class="generaltable table">
+      <thead><tr><th>{{#str}}originaldate, local_deadlineplanner{{/str}}</th><th>{{#str}}proposeddate, local_deadlineplanner{{/str}}</th><th>{{#str}}status, local_deadlineplanner{{/str}}</th></tr></thead>
+      <tbody>{{#scenarios}}<tr><td>{{original}}</td><td>{{proposed}}</td><td><a href="{{url}}">{{status}}</a></td></tr>{{/scenarios}}</tbody>
+    </table>
+  {{/hasscenarios}}
+  {{^hasscenarios}}<p>{{#str}}noscenarios, local_deadlineplanner{{/str}}</p>{{/hasscenarios}}
+</div>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/deadlineplanner/db" VERSION="20261014" COMMENT="Deadline planning data">
+  <TABLES>
+    <TABLE NAME="local_dlp_policy" COMMENT="Institutional policy by scope">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="dailycount" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="3"/>
+        <FIELD NAME="weeklycount" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="8"/>
+        <FIELD NAME="dailyweight" TYPE="number" LENGTH="8" DECIMALS="2" NOTNULL="true" DEFAULT="4.00"/>
+        <FIELD NAME="privacymin" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="5"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES><INDEX NAME="context_unique" UNIQUE="true" FIELDS="contextid"/></INDEXES>
+    </TABLE>
+    <TABLE NAME="local_dlp_deadline" COMMENT="Module-level due date snapshots; no student data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="modname" TYPE="char" LENGTH="30" NOTNULL="true"/>
+        <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="opentime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="duetime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="closetime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="cutofftime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="gradingtime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="modmodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="fingerprint" TYPE="char" LENGTH="64" NOTNULL="true"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES>
+        <INDEX NAME="cm_unique" UNIQUE="true" FIELDS="cmid"/>
+        <INDEX NAME="course_due" UNIQUE="false" FIELDS="courseid, duetime"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_dlp_sync" COMMENT="Refresh watermark for courses even when no activities have due dates">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES><INDEX NAME="course_unique" UNIQUE="true" FIELDS="courseid"/></INDEXES>
+    </TABLE>
+    <TABLE NAME="local_dlp_scenario" COMMENT="Proposed change snapshots">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="reviewerid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="olddue" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="newdue" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="fingerprint" TYPE="char" LENGTH="64" NOTNULL="true"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft"/>
+        <FIELD NAME="summary" TYPE="text" NOTNULL="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES>
+        <INDEX NAME="course_status" UNIQUE="false" FIELDS="courseid, status"/>
+        <INDEX NAME="cm_status" UNIQUE="false" FIELDS="cmid, status"/>
+        <INDEX NAME="userid_idx" UNIQUE="false" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_dlp_audit" COMMENT="Immutable audit trail without student identities">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="scenarioid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="actorid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="action" TYPE="char" LENGTH="30" NOTNULL="true"/>
+        <FIELD NAME="details" TYPE="text" NOTNULL="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS><KEY NAME="primary" TYPE="primary" FIELDS="id"/></KEYS>
+      <INDEXES><INDEX NAME="scenario_idx" UNIQUE="false" FIELDS="scenarioid"/></INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
