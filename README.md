@@ -2,15 +2,6 @@
 
 Academic planning across Moodle course enrolments, emphasizing safe aggregation over instructor access to individual external-course activity. Moodle **4.5 LTS+** and 5.x target, with PHP-supported prerequisites inherited from the Moodle version.
 
-## Installation
-
-1. Copy this directory to `local/deadlineplanner` under the Moodle source tree.
-2. Visit Site administration > Notifications to install the XMLDB tables.
-3. Configure policies under Site administration > Plugins > Local plugins > Academic deadline planner.
-4. Grant `local/deadlineplanner:view` and `local/deadlineplanner:simulate` only to roles permitted in each course, and `local/deadlineplanner:apply` to coordinators. Reserve `viewall` and `configure` for explicitly trusted staff.
-5. Ensure Moodle cron runs. A scheduled task refreshes course snapshots every 15 minutes, with adhoc invalidation on module changes.
-6. Open Course navigation > Academic deadline planner, or `local/deadlineplanner/index.php?courseid=123`.
-
 ## Operation
 
 Supports assignments (due dates and learner extensions) and quizzes (close dates and user/group override by official quiz API). Opening dates are never treated as due dates; cutoff and opening times are separately retained. Some Moodle modules have other date fields but are not included unless an audited provider is added.
