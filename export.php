@@ -38,7 +38,12 @@ header('Content-Type: text/csv; charset=UTF-8');
 header('Content-Disposition: attachment; filename="deadlineplanner.csv"');
 header('Cache-Control: private, no-store');
 $stream = fopen('php://output', 'w');
-fputcsv($stream, ['Activity', 'Type', 'Due at', 'URL']);
+fputcsv($stream, [
+    get_string('activity', 'local_deadlineplanner'),
+    get_string('type', 'local_deadlineplanner'),
+    get_string('csvdueat', 'local_deadlineplanner'),
+    get_string('csvurl', 'local_deadlineplanner'),
+]);
 foreach ($rows as $row) {
     $fields = [$row['name'], $row['type'], $row['date'], $row['url']];
     $fields = array_map(static function($value): string {
