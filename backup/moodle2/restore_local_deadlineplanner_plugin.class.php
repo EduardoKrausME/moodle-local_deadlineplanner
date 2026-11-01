@@ -31,16 +31,20 @@ require_once($CFG->dirroot . '/backup/moodle2/restore_local_plugin.class.php');
  */
 class restore_local_deadlineplanner_plugin extends restore_local_plugin {
     /**
+     * Restore the course policy from the plugin's direct backup element.
+     *
      * @return restore_path_element[]
      */
     protected function define_course_plugin_structure() {
         return [
             new restore_path_element('deadlineplanner_policy',
-                $this->get_pathfor('/deadlineplanner_policy')),
+                $this->connectionpoint->get_path() . '/deadlineplanner_policy'),
         ];
     }
 
     /**
+     * Restore activity scenarios and audit entries when user data is included.
+     *
      * @return restore_path_element[]
      */
     protected function define_module_plugin_structure() {
@@ -50,10 +54,10 @@ class restore_local_deadlineplanner_plugin extends restore_local_plugin {
 
         return [
             new restore_path_element('deadlineplanner_scenario',
-                $this->get_pathfor('/deadlineplanner_scenarios/deadlineplanner_scenario')),
+                $this->connectionpoint->get_path() . '/deadlineplanner_scenarios/deadlineplanner_scenario'),
             new restore_path_element('deadlineplanner_audit',
-                $this->get_pathfor('/deadlineplanner_scenarios/deadlineplanner_scenario/' .
-                    'deadlineplanner_audits/deadlineplanner_audit')),
+                $this->connectionpoint->get_path() . '/deadlineplanner_scenarios/deadlineplanner_scenario/' .
+                    'deadlineplanner_audits/deadlineplanner_audit'),
         ];
     }
 
