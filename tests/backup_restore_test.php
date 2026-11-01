@@ -93,8 +93,9 @@ final class backup_restore_test extends \advanced_testcase {
      * @param int $sourceid
      * @param int $targetid
      * @param bool $withusers
+     * @param bool $overwriteconfig Whether the target course configuration is restored.
      */
-    private function copy_course(int $sourceid, int $targetid, bool $withusers): void {
+    private function copy_course(int $sourceid, int $targetid, bool $withusers, bool $overwriteconfig): void {
         global $CFG, $USER;
 
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
@@ -121,6 +122,10 @@ final class backup_restore_test extends \advanced_testcase {
 
         $rc = new \restore_controller($backupid, $targetid, \backup::INTERACTIVE_NO,
             $mode, $USER->id, \backup::TARGET_EXISTING_ADDING);
+
+        // Moodle only executes the course-level restore step when course settings are overwritten.
+        // Activity-level scenarios can be imported without changing the existing course policy.
+        $rc->get_plan()->get_setting('overwrite_conf')->set_value($overwriteconfig);
         $this->assertTrue($rc->execute_precheck());
         $rc->execute_plan();
         $rc->destroy();
@@ -137,7 +142,7 @@ final class backup_restore_test extends \advanced_testcase {
         [$source] = $this->create_fixture();
         $target = $this->getDataGenerator()->create_course();
 
-        $this->copy_course($source->id, $target->id, false);
+        $this->copy_course($source->id, $target->id, false, true);
 
         $policy = $DB->get_record('local_deadlineplanner_policy', [
             'contextid' => \context_course::instance($target->id)->id,
@@ -161,7 +166,7 @@ final class backup_restore_test extends \advanced_testcase {
         [$source, $sourcecm, $oldid, $author, $reviewer] = $this->create_fixture();
         $target = $this->getDataGenerator()->create_course();
 
-        $this->copy_course($source->id, $target->id, true);
+        $this->copy_course($source->id, $target->id, true, true);
 
         $targetmodules = $DB->get_records('course_modules', ['course' => $target->id]);
         $this->assertCount(1, $targetmodules);
@@ -191,4 +196,35 @@ final class backup_restore_test extends \advanced_testcase {
         ], '*', MUST_EXIST);
         $this->assertEquals(6, $policy->weeklycount);
     }
+    /**
+     * Importing activities must not silently replace an existing course's policy.
+     */
+    public function test_restore_without_overwriting_course_keeps_target_policy(): void {
+        global $DB;
+
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        [$source] = $this->create_fixture();
+        $target = $this->getDataGenerator()->create_course();
+        $targetcontextid = \context_course::instance($target->id)->id;
+        $DB->insert_record('local_deadlineplanner_policy', (object) [
+            'contextid' => $targetcontextid,
+            'dailycount' => 9,
+            'weeklycount' => 12,
+            'dailyweight' => 2.0,
+            'privacymin' => 3,
+            'timecreated' => time(),
+            'timemodified' => time(),
+        ]);
+
+        $this->copy_course($source->id, $target->id, true, false);
+
+        $policy = $DB->get_record('local_deadlineplanner_policy',
+            ['contextid' => $targetcontextid], '*', MUST_EXIST);
+        $this->assertEquals(9, $policy->dailycount);
+        $this->assertEquals(3, $policy->privacymin);
+        $this->assertSame(1, $DB->count_records('local_deadlineplanner_scenario',
+            ['courseid' => $target->id]));
+    }
+
 }
