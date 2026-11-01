@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026102400;
-$plugin->release = '1.0.3';
+$plugin->version = 2026103100;
+$plugin->release = '1.0.4';
 $plugin->component = 'local_deadlineplanner';
 $plugin->requires = 2024100700;
 $plugin->maturity = MATURITY_STABLE;
