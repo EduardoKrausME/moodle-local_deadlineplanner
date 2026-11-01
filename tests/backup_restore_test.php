@@ -196,6 +196,7 @@ final class backup_restore_test extends \advanced_testcase {
         ], '*', MUST_EXIST);
         $this->assertEquals(6, $policy->weeklycount);
     }
+
     /**
      * Importing activities must not silently replace an existing course's policy.
      */
@@ -226,5 +227,4 @@ final class backup_restore_test extends \advanced_testcase {
         $this->assertSame(1, $DB->count_records('local_deadlineplanner_scenario',
             ['courseid' => $target->id]));
     }
-
 }
