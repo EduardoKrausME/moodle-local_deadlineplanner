@@ -25,6 +25,8 @@
 namespace local_deadlineplanner;
 
 /**
+ * Verify that course backups preserve policies and user-scoped scenarios correctly.
+ *
  * @coversNothing
  */
 final class backup_restore_test extends \advanced_testcase {
