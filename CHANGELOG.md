@@ -2,6 +2,15 @@
 
 This changelog documents **only the two most recent published GitHub releases** of `local_deadlineplanner`, based on each published tag compared with its immediately preceding **published release** tag. No commits outside these tag comparisons are included.
 
+## 1.0.4 - 2026-11-01
+
+- Preserved deadline policies and activity scenarios during Moodle course backup and restore.
+- Corrected restore paths and Moodle `overwrite_conf` handling for course policies, with backup/restore regression tests.
+- Localized CSV export column headers and reordered language strings.
+- Added backup/restore integration documentation and normalized PHP file headers.
+
+**Full comparison:** [1.0.3...1.0.4](https://github.com/EduardoKrausME/moodle-local_deadlineplanner/compare/1.0.3...1.0.4)
+
 ## [1.0.3] - 2026-10-24
 
 Published on GitHub at 2026-10-25 01:30:21 UTC (2026-10-24 22:30:21 America/Sao_Paulo).
